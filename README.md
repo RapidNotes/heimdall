@@ -1,2 +1,2 @@
-# heimdall
-Auth microservice for Rapid Notes.
+# Heimdall
+The auth microservice for Rapid Notes.
