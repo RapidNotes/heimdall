@@ -50,6 +50,10 @@ public class User implements UserDetails {
         this.encodedPassword = encodedPassword;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     @Override
     public String getUsername() {
        return username;
