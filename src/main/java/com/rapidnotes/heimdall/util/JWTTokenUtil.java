@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
-import java.security.cert.TrustAnchor;
 import java.util.Date;
 
 
@@ -24,7 +23,6 @@ public class JWTTokenUtil {
 
     private final String jwtSecret = "jdahhddsfdsfytyvbczxvfsdiuwerdsfsdhfgsdhgewruewsdaksdjshasjfkgdshfgsdfuewyge";
     private final Key signingKey = new SecretKeySpec(DatatypeConverter.parseBase64Binary(jwtSecret), SignatureAlgorithm.HS512.getJcaName());
-    private final String jwtIssuer = "rapid-notes.com";
     private static final long HOUR = 3600*1000; // in milli seconds
 
     public boolean validate(String token) {
@@ -46,6 +44,7 @@ public class JWTTokenUtil {
     }
 
     public String generateJWT(User user) {
+        String jwtIssuer = "rapid-notes.com";
         return Jwts.builder()
                 .setSubject(String.format("%s", user.getUsername()))
                 .setIssuer(jwtIssuer)

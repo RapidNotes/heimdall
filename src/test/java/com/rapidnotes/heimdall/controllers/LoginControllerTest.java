@@ -1,6 +1,5 @@
 package com.rapidnotes.heimdall.controllers;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rapidnotes.heimdall.dao.UserRepo;
 import com.rapidnotes.heimdall.domain.User;
@@ -11,15 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,12 +24,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-public class RegisterControllerTest {
+class LoginControllerTest {
 
     @Autowired
     MockMvc mockMvc;
     @Autowired
     UserRepo repo;
+    @Autowired
+    PasswordEncoder encoder;
 
     @BeforeEach
     void setUp() {
@@ -45,51 +44,25 @@ public class RegisterControllerTest {
     }
 
     @Test
-    void registerUser() throws Exception {
+    void login() throws Exception {
         Map<String, String> body = new HashMap<>();
-        body.put("username", "test_user");
-        body.put("firstname", "test_firstname");
-        body.put("lastname", "test_lastname");
-        body.put("password", "test_password");
-        body.put("email", "test_email");
+        body.put("username", "jdoe");
+        body.put("password", "testPass1");
+
 
         ObjectMapper objectMapper = new ObjectMapper();
-        mockMvc.perform(post("/api/v1/register").content(objectMapper.writeValueAsString(body))
+        mockMvc.perform(post("/api/v1/login")
+                .content(objectMapper.writeValueAsString(body))
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").value("test_user"))
-                .andExpect(jsonPath("$.firstname").value("test_firstname"))
-                .andExpect(jsonPath("$.lastname").value("test_lastname"))
-                .andExpect(jsonPath("$.email").value("test_email"))
-                .andExpect(jsonPath("$.*", hasSize(4)));
-    }
-
-    @Test
-    @WithMockUser
-    void getUser() throws Exception {
-        mockMvc.perform(get("/api/v1/register/jdoe"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("jdoe"))
                 .andExpect(jsonPath("$.firstname").value("john"))
                 .andExpect(jsonPath("$.lastname").value("doe"))
-                .andExpect(jsonPath("$.email").value("johnd@gmail.com"))
-                .andExpect(jsonPath("$.*", hasSize(4)));
-    }
-
-    @Test
-    @WithMockUser
-    void getAllUsers() throws Exception {
-        mockMvc.perform(get("/api/v1/register"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].*", hasSize(4)))
-                .andExpect(jsonPath("$[1].*", hasSize(4)));
+                .andExpect(jsonPath("$.email").value("johnd@gmail.com"));
     }
 
     private void addTestDataToDatabase(UserRepo repo) {
         repo.save(new User("jdoe", "john", "doe",
-                "johnd@gmail.com", "testPass1"));
-        repo.save(new User("edonnar", "Erdir", "Donnar",
-                "edonnar@gmail.com", "testPass2"));
+                "johnd@gmail.com", encoder.encode("testPass1")));
     }
 }

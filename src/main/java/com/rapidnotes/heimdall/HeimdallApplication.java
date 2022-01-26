@@ -9,6 +9,9 @@ public class HeimdallApplication {
 
 	public static void main(String[] args) {
 		ApplicationContext ctx = SpringApplication.run(HeimdallApplication.class, args);
+
+		// BeanFactory factory = ctx.getAutowireCapableBeanFactory();
+		// System.out.println(Arrays.toString(ctx.getBeanDefinitionNames()));
 	}
 
 }
