@@ -16,7 +16,6 @@ package com.rapidnotes.heimdall.dto;
 //
 
 import com.rapidnotes.heimdall.domain.User;
-import com.rapidnotes.heimdall.dto.UserDTO;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

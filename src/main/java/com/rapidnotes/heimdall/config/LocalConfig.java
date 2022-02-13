@@ -2,15 +2,23 @@ package com.rapidnotes.heimdall.config;
 
 import com.rapidnotes.heimdall.dao.UserRepo;
 import com.rapidnotes.heimdall.domain.User;
+import com.rapidnotes.heimdall.util.JWTTokenUtil;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
 
 @Slf4j
 @Configuration
+@Profile("Local")
 public class LocalConfig {
     @Autowired
     private PasswordEncoder encoder;
@@ -27,5 +35,15 @@ public class LocalConfig {
         };
     }
 
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
+    }
 
+    @Bean
+    public JWTTokenUtil jwtTokenUtil() {
+        String jwtSecret = "jdahhddsfdsfytyvbczxvfsdiuwerdsfsdhfgsdhgewruewsdaksdjshasjfkgdshfgsdfuewyge";
+        return new JWTTokenUtil(jwtSecret, new SecretKeySpec(DatatypeConverter.parseBase64Binary(jwtSecret),
+                SignatureAlgorithm.HS512.getJcaName()), "rapid-notes.com");
+    }
 }
