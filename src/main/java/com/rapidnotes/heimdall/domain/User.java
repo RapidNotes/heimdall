@@ -42,12 +42,12 @@ public class User implements UserDetails {
         return encodedPassword;
     }
 
-    public String getEncodedPassword(String encodedPassword) {
-        return encodedPassword;
-    }
-
     public void setEncodedPassword(String encodedPassword) {
         this.encodedPassword = encodedPassword;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override

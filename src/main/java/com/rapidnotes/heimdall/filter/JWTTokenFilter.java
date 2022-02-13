@@ -3,6 +3,7 @@ package com.rapidnotes.heimdall.filter;
 import com.rapidnotes.heimdall.dao.UserRepo;
 import com.rapidnotes.heimdall.util.JWTTokenUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +26,7 @@ public class JWTTokenFilter extends OncePerRequestFilter {
     private final JWTTokenUtil jwtTokenUtil;
     private final UserRepo userRepo;
 
+    @Autowired
     public JWTTokenFilter(JWTTokenUtil jwtTokenUtil,
                           UserRepo userRepo) {
         this.jwtTokenUtil = jwtTokenUtil;

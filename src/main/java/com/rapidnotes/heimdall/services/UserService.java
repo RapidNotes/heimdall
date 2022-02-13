@@ -1,8 +1,8 @@
 package com.rapidnotes.heimdall.services;
 
 import com.rapidnotes.heimdall.dao.UserRepo;
-import com.rapidnotes.heimdall.dto.UserRegisterDTO;
 import com.rapidnotes.heimdall.domain.User;
+import com.rapidnotes.heimdall.dto.UserRegisterDTO;
 import com.rapidnotes.heimdall.dto.UserRegisterDTOMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
