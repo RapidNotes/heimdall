@@ -6,6 +6,7 @@ import com.rapidnotes.heimdall.dao.UserRepo;
 import com.rapidnotes.heimdall.domain.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -45,6 +46,7 @@ public class RegisterControllerTest {
     }
 
     @Test
+    @DisplayName("POST /api/v1/register happy path test")
     void registerUser() throws Exception {
         Map<String, String> body = new HashMap<>();
         body.put("username", "test_user");
@@ -66,6 +68,7 @@ public class RegisterControllerTest {
 
     @Test
     @WithMockUser
+    @DisplayName("GET /api/v1/register/{username} happy path test")
     void getUser() throws Exception {
         mockMvc.perform(get("/api/v1/register/jdoe"))
                 .andExpect(status().isOk())
@@ -78,6 +81,7 @@ public class RegisterControllerTest {
 
     @Test
     @WithMockUser
+    @DisplayName("GET /api/v1/register happy path test")
     void getAllUsers() throws Exception {
         mockMvc.perform(get("/api/v1/register"))
                 .andExpect(status().isOk())

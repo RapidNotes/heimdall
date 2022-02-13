@@ -5,25 +5,27 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
-import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.util.Date;
 
 
-@Component
 @Slf4j
 public class JWTTokenUtil {
 
-    private final String jwtSecret = "jdahhddsfdsfytyvbczxvfsdiuwerdsfsdhfgsdhgewruewsdaksdjshasjfkgdshfgsdfuewyge";
-    private final Key signingKey = new SecretKeySpec(DatatypeConverter.parseBase64Binary(jwtSecret), SignatureAlgorithm.HS512.getJcaName());
+    private final String jwtSecret;
+    private final Key signingKey;
+    private final String jwtIssuer;
     private static final long HOUR = 3600*1000; // in milli seconds
+
+    public JWTTokenUtil(String jwtSecret, Key signingKey, String jwtIssuer) {
+        this.jwtSecret = jwtSecret;
+        this.signingKey = signingKey;
+        this.jwtIssuer = jwtIssuer;
+    }
 
     public boolean validate(String token) {
         try {
@@ -44,7 +46,6 @@ public class JWTTokenUtil {
     }
 
     public String generateJWT(User user) {
-        String jwtIssuer = "rapid-notes.com";
         return Jwts.builder()
                 .setSubject(String.format("%s", user.getUsername()))
                 .setIssuer(jwtIssuer)
